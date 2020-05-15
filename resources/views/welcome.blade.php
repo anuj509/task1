@@ -85,12 +85,17 @@
                 contentType: false,
                 success: function(result)
                 {
-                    $('#select-list').html('');
-                    $('#request_panel').css("display", "none");
-                    $('#response_panel').css("display", "block");
-                    result.data.forEach(file => {
-                        $('#uploaded-list').append('<li class="list-group-item"><strong>'+file+'</li>');
-                    });
+                    if(result.status=="Upload Success"){
+                        $('#select-list').html('');
+                        $('#request_panel').css("display", "none");
+                        $('#response_panel').css("display", "block");
+                        result.data.forEach(file => {
+                            $('#uploaded-list').append('<li class="list-group-item"><strong>'+file+'</li>');
+                        });
+                    }else{
+                        console.log(result.status);
+                        alert(result.status);
+                    }
                 },
                 error: function(data)
                 {

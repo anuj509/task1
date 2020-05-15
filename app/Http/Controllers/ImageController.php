@@ -44,6 +44,8 @@ class ImageController extends Controller
                 $file->move(public_path().'/uploads/', $name);
             }
             return response()->json(["status"=>"Upload Success","data"=>$names]);
+        }else{
+            return response()->json(["status"=>"Please Select file(s) first"]);    
         }
         return response()->json(["status"=>"Upload failure"]);
     }
