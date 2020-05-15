@@ -33,16 +33,24 @@
                 </div><!-- col-3 -->
             </div><!--row-->
             </div><!--uploader-->
-            <div class="panel panel-primary" id="result_panel">
+            <div class="panel panel-primary" id="request_panel">
                 <div class="panel-heading"><h3 class="panel-title">Selected Files</h3>
-            </div>
-            <div class="panel-body">
-                <ul class="list-group">
-                </ul>
-            </div>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group" id="select-list">
+                    </ul>
+                </div>
             </div>
             <div class="text-center">
                 <button  type="submit" class="btn btn-next col-sm-4"><i class="fa fa-paper-plane"></i> Submit</button>
+            </div>
+            <div class="panel panel-primary" id="response_panel">
+                <div class="panel-heading"><h3 class="panel-title">Recently Uploaded Files</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group"  id="uploaded-list">
+                    </ul>
+                </div>
             </div>
             </div><!--one-->
     </div><!-- row -->
@@ -54,14 +62,14 @@
     $(document).ready(function(){
         $('input:file').change(function(){
             if(this.files.length>0){
-                $('#result_panel').css("display", "block");
-                $('.list-group').html('');
+                $('#request_panel').css("display", "block");
+                $('#select-list').html('');
                 for(var i = 0 ; i < this.files.length ; i++){
-                var fileName = this.files[i].name;
-                $('.list-group').append('<li class="list-group-item"><strong>'+fileName+'</li>');
+                    var fileName = this.files[i].name;
+                    $('#select-list').append('<li class="list-group-item"><strong>'+fileName+'</li>');
                 }
             }else{
-                $('#result_panel').css("display", "none");
+                $('#request_panel').css("display", "none");
             }
         });
 
@@ -77,11 +85,17 @@
                 contentType: false,
                 success: function(result)
                 {
-                    console.log(result);
+                    $('#select-list').html('');
+                    $('#request_panel').css("display", "none");
+                    $('#response_panel').css("display", "block");
+                    result.data.forEach(file => {
+                        $('#uploaded-list').append('<li class="list-group-item"><strong>'+file+'</li>');
+                    });
                 },
                 error: function(data)
                 {
                     console.log(data);
+                    alert(data.status);
                 }
             });
 
